@@ -1,0 +1,23 @@
+# RoadWatch AI - Python Requirements
+# Install with: pip install -r requirements.txt
+
+Flask==2.3.2
+Flask-CORS==4.0.0
+opencv-python==4.8.0.74
+numpy==1.24.3
+Werkzeug==2.3.6
+python-dotenv==1.0.0
+Pillow==9.5.0
+
+# Optional: For YOLOv8 detection (uncomment if using actual model)
+# ultralytics==8.0.0
+# torch==2.0.0
+# torchvision==0.15.0
+
+# Optional: For OCR (license plate extraction)
+# pytesseract==0.3.10
+# easyocr==1.6.2
+
+# Optional: For production deployment
+# gunicorn==20.1.0
+# python-socketio==5.8.0

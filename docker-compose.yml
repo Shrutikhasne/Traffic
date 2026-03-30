@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# RoadWatch AI - Docker Compose Setup
+# Starts all services using Docker
+
+version='3.8'
+
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: roadwatch-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  backend:
+    build: ./server
+    container_name: roadwatch-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/roadwatch-ai
+      - JWT_SECRET=secret_key_change_in_prod
+      - NODE_ENV=development
+    volumes:
+      - ./server:/app
+
+  frontend:
+    build: ./client
+    container_name: roadwatch-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5000/api
+    volumes:
+      - ./client:/app
+
+  ai-service:
+    build: ./ai-service
+    container_name: roadwatch-ai
+    ports:
+      - "5001:5001"
+    environment:
+      - DEBUG=True
+    volumes:
+      - ./ai-service:/app
+
+volumes:
+  mongodb_data:
+
+# Run with: docker-compose up -d
+# Stop with: docker-compose down
+# View logs: docker-compose logs -f
